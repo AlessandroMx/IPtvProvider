@@ -11,8 +11,8 @@ def COMPONENT_VERSION = '1.0.0'
 def CONF_FOLDER = 'env/dev'
 def SPRING_VERSION="3.0.5.RELEASE"
 def AXIS2_VERSION = '1.7.8'
-// def JBOSS_HOME = '/opt/jboss-4.2.3.GA/'
-def JBOSS_HOME = '/opt/wildfly/'
+def JBOSS_HOME = '/opt/jboss-4.2.3.GA/'
+//def JBOSS_HOME = '/opt/wildfly/'
 dependencies {
     compile "org.springframework:spring-jms:${SPRING_VERSION}",
             "org.springframework:spring-context-support:${SPRING_VERSION}",

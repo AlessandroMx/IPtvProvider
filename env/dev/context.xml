@@ -28,6 +28,7 @@
 
     <bean id="consumerSpringListener" class="edu.itq.iptvprovider.ConsumerSpringListener">
     	<property name="jmsSender" ref="jmsSender"/>
+    	<property name="businessLogic" ref="businessLogic" />
     </bean> 
     
     <bean id="jndiConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
@@ -44,6 +45,44 @@
     		</props>
     	</property>
     </bean> 
+    
+    <!-- *********************************** DataSources *********************************** -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/iptv" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	<!-- *********************************** Spring Templates *********************************** -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    	<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- *********************************** JDBC objects *********************************** -->
+	<bean id="clienteDao" class="edu.itq.iptv.dao.ClienteDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	<bean id="paqueteDao" class="edu.itq.iptv.dao.PaqueteDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	<bean id="solicitudDao" class="edu.itq.iptv.dao.SolicitudDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	<!-- ************************************ BL objects ************************************ -->
+	<bean id="businessLogic" class="edu.itq.iptv.business.BusinessLogic">
+		<property name="clienteDao" ref="clienteDao" />
+		<property name="paqueteDao" ref="paqueteDao" />
+		<property name="solicitudDao" ref="solicitudDao" />
+	</bean>
+	<!-- *********************************** WEB Service *********************************** -->
+	<!--<bean id="iptvImpl" class="edu.itq.iptv.IptvServiceImpl">
+		<property name="businessLogic" ref="businessLogic" />
+	</bean>-->
+	
+	<!-- <bean id="applicationContext" class="org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder"></bean> -->
+	<!-- *********************************** Transaction manager *********************************** -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
     <bean id="inQueue" class="org.springframework.jndi.JndiObjectFactoryBean">
     	<property name="jndiTemplate" ref="jndiTemplate"/>
